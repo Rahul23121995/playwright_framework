@@ -125,9 +125,9 @@ Our automated buyer flow logs in, aggregates products to the cart, validates int
 > [!NOTE]
 > **Checkout Execution Recording**: Below is the dynamic execution showing the actual browser compiling inputs, clicking checkout elements, and completing the order.
 >
-> https://github.com/Rahul23121995/playwright_framework/assets/main/checkout_video.webm
+> **Direct Raw Video Link**: [checkout_video.webm](https://github.com/Rahul23121995/playwright_framework/raw/main/assets/checkout_video.webm)
 >
-> <video src="./assets/checkout_video.webm" width="100%" controls autoplay loop muted></video>
+> <video src="https://github.com/Rahul23121995/playwright_framework/raw/main/assets/checkout_video.webm" width="100%" controls autoplay loop muted></video>
 
 ### 🔬 Advanced Sandboxed Interactions Test
 Our custom, offline-ready HTML sandbox verification suite intercepts dialogues, parses shadow-DOM elements, uploads test buffers, and downloads files.
@@ -137,9 +137,9 @@ Our custom, offline-ready HTML sandbox verification suite intercepts dialogues, 
 > [!NOTE]
 > **Advanced E2E Sandbox Recording**: Below is the live execution showing Playwright handling iframes, alerts, shadow roots, and file streams offline.
 >
-> https://github.com/Rahul23121995/playwright_framework/assets/main/advanced_video.webm
+> **Direct Raw Video Link**: [advanced_video.webm](https://github.com/Rahul23121995/playwright_framework/raw/main/assets/advanced_video.webm)
 >
-> <video src="./assets/advanced_video.webm" width="100%" controls autoplay loop muted></video>
+> <video src="https://github.com/Rahul23121995/playwright_framework/raw/main/assets/advanced_video.webm" width="100%" controls autoplay loop muted></video>
 
 ---
 
