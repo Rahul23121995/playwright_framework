@@ -113,6 +113,22 @@ Inside [api-contract.spec.ts](src/tests/api/api-contract.spec.ts), we validate R
 
 ---
 
+## 📊 Live E2E Test Execution Reports
+
+To showcase automated verification consistency, below are live execution captures captured during headless execution on the Chromium browser:
+
+### 🛍️ E2E Buyer Journey Checkout Test
+Our automated buyer flow logs in, aggregates products to the cart, validates intermediate sum calculation details, and executes order transactions successfully.
+
+![E2E Buyer Checkout Verification](./assets/checkout_success.png)
+
+### 🔬 Advanced Sandboxed Interactions Test
+Our custom, offline-ready HTML sandbox verification suite intercepts dialogues, parses shadow-DOM elements, uploads test buffers, and downloads files.
+
+![Advanced Sandbox Element Verification](./assets/advanced_success.png)
+
+---
+
 ## 🎡 Continuous Integration (CI/CD)
 
 The project includes a robust GitHub Actions configuration at `.github/workflows/playwright-ci.yml`.
