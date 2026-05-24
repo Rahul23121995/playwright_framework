@@ -88,7 +88,7 @@ export default defineConfig({
     {
       name: 'API Tests',
       use: {
-        baseURL: 'https://reqres.in',
+        baseURL: 'http://localhost:3001',
         extraHTTPHeaders: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

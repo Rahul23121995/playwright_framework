@@ -1,9 +1,13 @@
 import { test, expect } from '@playwright/test';
+import * as http from 'http';
+import { AddressInfo } from 'net';
 import { Logger } from '../../utils/Logger';
 
-test.describe('API Contract & Integration Testing - ReqRes API', () => {
+test.describe('API Contract & Integration Testing - Local Mock REST API', () => {
+  let server: http.Server;
+  let port: number;
 
-  // Schema interface representing standard user objects returned by ReqRes
+  // Schema interface representing standard user objects
   interface User {
     id: number;
     email: string;
@@ -14,7 +18,7 @@ test.describe('API Contract & Integration Testing - ReqRes API', () => {
 
   /**
    * Custom Contract Validator checking matching types.
-   * Demonstrates strict vanilla TypeScript schema verification without heavy external libraries.
+   * Demonstrates strict vanilla TypeScript schema verification.
    */
   function validateUserSchema(user: any): user is User {
     return (
@@ -26,12 +30,78 @@ test.describe('API Contract & Integration Testing - ReqRes API', () => {
     );
   }
 
+  // Spin up a local lightweight mock server before running the API tests
+  test.beforeAll(async () => {
+    Logger.info('Starting local mock REST API server...');
+    server = http.createServer((req, res) => {
+      res.setHeader('Content-Type', 'application/json');
+
+      if (req.url?.startsWith('/api/users')) {
+        if (req.method === 'GET') {
+          res.writeHead(200);
+          res.end(
+            JSON.stringify({
+              page: 2,
+              data: [
+                {
+                  id: 7,
+                  email: 'michael.lawson@reqres.in',
+                  first_name: 'Michael',
+                  last_name: 'Lawson',
+                  avatar: 'https://reqres.in/img/faces/7-image.jpg'
+                }
+              ]
+            })
+          );
+        } else if (req.method === 'POST') {
+          res.writeHead(201);
+          res.end(
+            JSON.stringify({
+              name: 'SDET Candidate',
+              job: 'Principal QA Engineer',
+              id: '100',
+              createdAt: new Date().toISOString()
+            })
+          );
+        } else if (req.method === 'PUT') {
+          res.writeHead(200);
+          res.end(
+            JSON.stringify({
+              name: 'E2E Expert',
+              job: 'Director of QA Automation',
+              updatedAt: new Date().toISOString()
+            })
+          );
+        } else if (req.method === 'DELETE') {
+          res.writeHead(204);
+          res.end();
+        }
+      } else {
+        res.writeHead(404);
+        res.end(JSON.stringify({ error: 'Not Found' }));
+      }
+    });
+
+    // Listen to Port 0 (OS will automatically allocate any free ephemeral port, preventing conflicts)
+    await new Promise<void>((resolve) => server.listen(0, resolve));
+    const address = server.address() as AddressInfo;
+    port = address.port;
+    Logger.info(`Local mock REST API server running dynamically on http://localhost:${port}`);
+  });
+
+  // Tear down mock server after completing the tests
+  test.afterAll(async () => {
+    Logger.info('Stopping local mock REST API server...');
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    Logger.info('Local mock REST API server stopped.');
+  });
+
   test('GET /api/users - Should return list of users and match schema contracts', async ({ request }) => {
     Logger.testStep('API GET List Validation');
 
-    // Make standard HTTP GET Request
-    Logger.info('Sending GET request to "/api/users?page=2"');
-    const response = await request.get('/api/users', {
+    // Make GET request to the local mock server
+    Logger.info(`Sending GET request to "http://localhost:${port}/api/users?page=2"`);
+    const response = await request.get(`http://localhost:${port}/api/users`, {
       params: { page: 2 }
     });
 
@@ -67,7 +137,7 @@ test.describe('API Contract & Integration Testing - ReqRes API', () => {
     };
 
     Logger.info(`Sending POST request with payload: ${JSON.stringify(newUserPayload)}`);
-    const response = await request.post('/api/users', {
+    const response = await request.post(`http://localhost:${port}/api/users`, {
       data: newUserPayload
     });
 
@@ -92,7 +162,7 @@ test.describe('API Contract & Integration Testing - ReqRes API', () => {
     };
 
     Logger.info(`Sending PUT request to update user "2" with payload: ${JSON.stringify(updatePayload)}`);
-    const response = await request.put('/api/users/2', {
+    const response = await request.put(`http://localhost:${port}/api/users/2`, {
       data: updatePayload
     });
 
@@ -111,7 +181,7 @@ test.describe('API Contract & Integration Testing - ReqRes API', () => {
     Logger.testStep('API DELETE Request Validation');
 
     Logger.info('Sending DELETE request to "/api/users/2"');
-    const response = await request.delete('/api/users/2');
+    const response = await request.delete(`http://localhost:${port}/api/users/2`);
 
     // Assert status is 204 No Content (standard deletion success status)
     expect(response.status()).toBe(204);

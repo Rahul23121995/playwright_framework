@@ -115,17 +115,31 @@ Inside [api-contract.spec.ts](src/tests/api/api-contract.spec.ts), we validate R
 
 ## 📊 Live E2E Test Execution Reports
 
-To showcase automated verification consistency, below are live execution captures captured during headless execution on the Chromium browser:
+To showcase automated verification consistency, below are live execution captures and interactive execution recordings captured during E2E runs:
 
 ### 🛍️ E2E Buyer Journey Checkout Test
 Our automated buyer flow logs in, aggregates products to the cart, validates intermediate sum calculation details, and executes order transactions successfully.
 
 ![E2E Buyer Checkout Verification](./assets/checkout_success.png)
 
+> [!NOTE]
+> **Checkout Execution Recording**: Below is the dynamic execution showing the actual browser compiling inputs, clicking checkout elements, and completing the order.
+>
+> https://github.com/Rahul23121995/playwright_framework/assets/main/checkout_video.webm
+>
+> <video src="./assets/checkout_video.webm" width="100%" controls autoplay loop muted></video>
+
 ### 🔬 Advanced Sandboxed Interactions Test
 Our custom, offline-ready HTML sandbox verification suite intercepts dialogues, parses shadow-DOM elements, uploads test buffers, and downloads files.
 
 ![Advanced Sandbox Element Verification](./assets/advanced_success.png)
+
+> [!NOTE]
+> **Advanced E2E Sandbox Recording**: Below is the live execution showing Playwright handling iframes, alerts, shadow roots, and file streams offline.
+>
+> https://github.com/Rahul23121995/playwright_framework/assets/main/advanced_video.webm
+>
+> <video src="./assets/advanced_video.webm" width="100%" controls autoplay loop muted></video>
 
 ---
 
