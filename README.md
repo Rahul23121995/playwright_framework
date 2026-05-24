@@ -115,7 +115,12 @@ Inside [api-contract.spec.ts](src/tests/api/api-contract.spec.ts), we validate R
 
 ## 📊 Live E2E Test Execution Reports
 
-To showcase automated verification consistency, below are live execution captures and interactive execution recordings captured during E2E runs:
+To showcase E2E automated verification consistency, below are the interactive dashboard report and execution logs captured during headless E2E runs:
+
+### 📊 Playwright HTML Test Report Dashboard
+Every execution compiles step-by-step E2E browser details, execution timelines, console warning tags, network requests, screenshots, and video streams into a premium HTML dashboard report.
+
+![Playwright HTML Report Dashboard](./assets/playwright_report.png)
 
 ### 🛍️ E2E Buyer Journey Checkout Test
 Our automated buyer flow logs in, aggregates products to the cart, validates intermediate sum calculation details, and executes order transactions successfully.
