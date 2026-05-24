@@ -1,0 +1,21 @@
+# Dependency directories
+node_modules/
+
+# Test execution outputs
+test-results/
+playwright-report/
+blob-report/
+results.xml
+playwright/.cache/
+
+# Local configuration & environment secrets
+.env
+.env.production
+.env.staging
+
+# Compile directories
+dist/
+
+# OS metadata
+.DS_Store
+Thumbs.db

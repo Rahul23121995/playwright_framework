@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playwright SDET Test Automation Playground</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121214;
+            color: #e1e1e6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #202024;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #00b37e;
+            border-bottom: 2px solid #29292e;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .section {
+            background: #29292e;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00b37e;
+        }
+        h2 {
+            margin-top: 0;
+            color: #e1e1e6;
+            font-size: 1.25rem;
+        }
+        button {
+            background: #00b37e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #00875f;
+        }
+        #loading-text {
+            margin-top: 10px;
+            font-style: italic;
+            color: #8d8d99;
+        }
+        #result-text {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #f75a68;
+        }
+        iframe {
+            width: 100%;
+            height: 100px;
+            border: 2px dashed #4d4d57;
+            border-radius: 6px;
+            background: #121214;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SDET Automation Test Sandbox</h1>
+        <p>This self-contained offline playground is designed to validate complex browser automation tasks reliably.</p>
+
+        <!-- Dynamic Content Section -->
+        <div class="section" id="dynamic-loading-section">
+            <h2>1. Dynamic Content Loading (Wait States)</h2>
+            <button id="start-dynamic-btn">Trigger Async Data</button>
+            <div id="loading-text" style="display: none;">Syncing with cloud API...</div>
+            <div id="result-text" style="display: none;">Async content loaded successfully!</div>
+        </div>
+
+        <!-- Dialogs Section -->
+        <div class="section" id="dialogs-section">
+            <h2>2. Native JS Alert & Confirms</h2>
+            <button id="alert-btn" onclick="alert('Hello from Playwright Automation!')">Trigger Alert</button>
+            <button id="confirm-btn" onclick="triggerConfirm()">Trigger Confirm</button>
+            <p id="confirm-response" style="color: #00b37e; font-weight: bold;"></p>
+        </div>
+
+        <!-- Shadow DOM Section -->
+        <div class="section" id="shadow-dom-section">
+            <h2>3. Shadow DOM Components</h2>
+            <div id="shadow-host"></div>
+        </div>
+
+        <!-- iFrame Section -->
+        <div class="section" id="iframe-section">
+            <h2>4. Nested iFrames</h2>
+            <iframe id="test-iframe" srcdoc="
+                <!DOCTYPE html>
+                <html>
+                <body style='background: #121214; color: #e1e1e6; font-family: sans-serif; padding: 10px;'>
+                    <h3 id='iframe-title'>Inside the Frame</h3>
+                    <button id='iframe-click-btn' onclick='document.getElementById(&quot;iframe-status&quot;).innerText = &quot;Clicked inside frame!&quot;'>Click Inside Frame</button>
+                    <p id='iframe-status' style='color: #00b37e; font-weight: bold;'></p>
+                </body>
+                </html>
+            "></iframe>
+        </div>
+
+        <!-- File Transfer Section -->
+        <div class="section" id="files-section">
+            <h2>5. File Handling</h2>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div>
+                    <h3>File Upload</h3>
+                    <input type="file" id="file-uploader" onchange="handleUpload(event)" />
+                    <p id="upload-status" style="color: #00b37e; font-weight: bold;"></p>
+                </div>
+                <div>
+                    <h3>File Download</h3>
+                    <a href="data:text/plain;charset=utf-8,Playwright%20Download%20Verification%20File" download="showcase-verification.txt">
+                        <button id="download-link-btn">Download Test Artifact</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Dynamic Loading JavaScript
+        document.getElementById('start-dynamic-btn').addEventListener('click', () => {
+            const loading = document.getElementById('loading-text');
+            const result = document.getElementById('result-text');
+            
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            setTimeout(() => {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+            }, 1500); // 1.5 second simulated latency
+        });
+
+        // 2. Dialog handling script
+        function triggerConfirm() {
+            const userChoice = confirm("Do you approve this E2E test execution?");
+            const responseTxt = document.getElementById('confirm-response');
+            if (userChoice === true) {
+                responseTxt.innerText = "Recruiter Approved E2E Test Execution!";
+            } else {
+                responseTxt.innerText = "Test cancelled.";
+            }
+        }
+
+        // 3. Shadow DOM injection
+        const host = document.getElementById('shadow-host');
+        const shadowRoot = host.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = `
+            <style>
+                p {
+                    color: #ff9000;
+                    font-weight: 600;
+                    margin: 0;
+                }
+                .shadow-btn {
+                    background: #ff9000;
+                    color: black;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-top: 10px;
+                }
+            </style>
+            <p id="shadow-text">Hidden inside Shadow DOM context!</p>
+            <button class="shadow-btn">Shadow Action</button>
+        `;
+
+        // 5. File upload handler
+        function handleUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('upload-status').innerText = `Successfully processed: ${file.name}`;
+            }
+        }
+    </script>
+</body>
+</html>

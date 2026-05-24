@@ -1,0 +1,67 @@
+name: Playwright E2E & API Test Automation Suite
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: Install Project Dependencies
+      run: npm ci
+
+    - name: Get Playwright Version
+      id: playwright-version
+      run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('@playwright/test/package.json').version)")" >> $GITHUB_ENV
+
+    - name: Cache Playwright Browser Binaries
+      uses: actions/cache@v4
+      id: playwright-cache
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: Install Playwright Browser Binaries
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps
+
+    - name: Install OS Dependencies (If Cached)
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      run: npx playwright install-deps
+
+    - name: Run ESLint & TypeScript Type Check
+      run: npm run lint
+
+    - name: Run E2E and API Automated Tests
+      run: npm run test
+      env:
+        CI: true
+        BASE_URL: https://www.saucedemo.com
+        API_BASE_URL: https://reqres.in
+        TEST_USERNAME: ${{ secrets.TEST_USERNAME || 'standard_user' }}
+        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD || 'secret_sauce' }}
+        LOCKED_OUT_USERNAME: locked_out_user
+
+    - name: Packaging and Uploading Test Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-execution-report
+        path: playwright-report/
+        retention-days: 30

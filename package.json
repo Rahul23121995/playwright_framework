@@ -1,0 +1,33 @@
+{
+  "name": "playwright-portfolio-showcase",
+  "version": "1.0.0",
+  "description": "Enterprise-grade Playwright & TypeScript E2E & API test automation framework for showcase.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --project=\"Chromium UI\"",
+    "test:api": "npx playwright test --project=\"API Tests\"",
+    "test:debug": "npx playwright test --debug",
+    "test:ui-mode": "npx playwright test --ui",
+    "test:report": "npx playwright show-report",
+    "lint": "npx tsc --noEmit"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "automation",
+    "sdet",
+    "testing",
+    "qa",
+    "ci-cd",
+    "github-actions"
+  ],
+  "author": "SDET Portfolio Showcase",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "@types/node": "^20.12.7",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.4.5"
+  }
+}
