@@ -11,6 +11,10 @@ export class Logger {
     console.log(`[${this.getTimestamp()}] [INFO]  ${message}`);
   }
 
+  public static success(message: string): void {
+    console.log(`[${this.getTimestamp()}] [SUCCESS] ✅ ${message}`);
+  }
+
   public static warn(message: string): void {
     console.warn(`[${this.getTimestamp()}] [WARN]  ⚠️ ${message}`);
   }

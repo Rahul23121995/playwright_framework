@@ -17,7 +17,7 @@ test.describe('Authentication Tests - SauceDemo', () => {
     await loginPage.login(username, password);
     await inventoryPage.verifyHeaderTitle();
     
-    Logger.info('Positive Login test passed.');
+    Logger.success('Positive Login test passed.');
   });
 
   test('Should display error for locked out user', async ({ loginPage }) => {
@@ -29,7 +29,7 @@ test.describe('Authentication Tests - SauceDemo', () => {
     await loginPage.login(username, password);
     await loginPage.verifyLoginErrorContains('Epic sadface: Sorry, this user has been locked out.');
     
-    Logger.info('Locked out user verification passed.');
+    Logger.success('Locked out user verification passed.');
   });
 
   test('Should display error for invalid credentials', async ({ loginPage }) => {
@@ -38,7 +38,7 @@ test.describe('Authentication Tests - SauceDemo', () => {
     await loginPage.login('invalid_user', 'wrong_password');
     await loginPage.verifyLoginErrorContains('Epic sadface: Username and password do not match any user in this service');
     
-    Logger.info('Invalid login error verification passed.');
+    Logger.success('Invalid login error verification passed.');
   });
 
   test('Should logout successfully', async ({ loginPage, inventoryPage, page }) => {
@@ -61,6 +61,6 @@ test.describe('Authentication Tests - SauceDemo', () => {
 
     // Verify redirected back to Login screen
     await loginPage.verifyPageUrl();
-    Logger.info('Logout flow verified successfully.');
+    Logger.success('Logout flow verified successfully.');
   });
 });
