@@ -32,6 +32,23 @@ export abstract class BasePage {
   }
 
   /**
+   * Explicitly wait for an element to be visible on the page.
+   * @param selector Locator, or string selector
+   * @param elementName Readable element name
+   * @param timeoutMs Custom timeout limit in milliseconds
+   */
+  async waitForElementToBeVisible(
+    selector: string | any, 
+    elementName: string, 
+    timeoutMs: number = 5000
+  ): Promise<void> {
+    Logger.info(`Waiting for "${elementName}" to become visible...`);
+    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
+    await locator.waitFor({ state: 'visible', timeout: timeoutMs });
+    Logger.debug(`"${elementName}" is now visible.`);
+  }
+
+  /**
    * Validate that the current URL matches the expected page path.
    */
   async verifyPageUrl(): Promise<void> {
