@@ -49,6 +49,24 @@ export abstract class BasePage {
   }
 
   /**
+   * Explicitly wait for an element to be visible and enabled (clickable).
+   * @param selector Locator, or string selector
+   * @param elementName Readable element name
+   * @param timeoutMs Custom timeout limit in milliseconds
+   */
+  async waitForElementToBeClickable(
+    selector: string | any, 
+    elementName: string, 
+    timeoutMs: number = 5000
+  ): Promise<void> {
+    Logger.info(`Waiting for "${elementName}" to become clickable...`);
+    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
+    await locator.waitFor({ state: 'visible', timeout: timeoutMs });
+    await expect(locator).toBeEnabled({ timeout: timeoutMs });
+    Logger.debug(`"${elementName}" is now clickable.`);
+  }
+
+  /**
    * Validate that the current URL matches the expected page path.
    */
   async verifyPageUrl(): Promise<void> {
