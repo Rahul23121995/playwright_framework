@@ -67,6 +67,31 @@ export abstract class BasePage {
   }
 
   /**
+   * Check if an element is visible on the page without throwing an error on failure.
+   * Very useful for conditional flows like closing optional popups or dismissable banners.
+   * @param selector Locator, or string selector
+   * @param elementName Readable element name for logging
+   * @param timeoutMs Custom timeout limit in milliseconds
+   * @returns Promise<boolean> True if visible, false otherwise
+   */
+  async isElementVisible(
+    selector: string | any,
+    elementName: string,
+    timeoutMs: number = 2000
+  ): Promise<boolean> {
+    Logger.debug(`Checking if "${elementName}" is visible (Timeout: ${timeoutMs}ms)...`);
+    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
+    try {
+      await locator.waitFor({ state: 'visible', timeout: timeoutMs });
+      Logger.debug(`"${elementName}" is visible.`);
+      return true;
+    } catch {
+      Logger.debug(`"${elementName}" is not visible.`);
+      return false;
+    }
+  }
+
+  /**
    * Validate that the current URL matches the expected page path.
    */
   async verifyPageUrl(): Promise<void> {
