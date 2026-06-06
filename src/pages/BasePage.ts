@@ -150,4 +150,23 @@ export abstract class BasePage {
     Logger.debug(`Retrieved text from "${elementName}": "${text?.trim()}"`);
     return text ? text.trim() : '';
   }
+
+  /**
+   * Capture a screenshot of a specific element and save it to the specified path.
+   * Useful for visual assertions or debugging specific element states.
+   * @param selector Locator, or string selector
+   * @param elementName Readable element name for logging
+   * @param savePath Path where the screenshot will be saved
+   */
+  async captureElementScreenshot(
+    selector: string | any,
+    elementName: string,
+    savePath: string
+  ): Promise<void> {
+    Logger.info(`Capturing screenshot of element: "${elementName}" to "${savePath}"`);
+    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
+    await locator.waitFor({ state: 'visible' });
+    await locator.screenshot({ path: savePath });
+    Logger.success(`Screenshot of element "${elementName}" saved successfully.`);
+  }
 }
