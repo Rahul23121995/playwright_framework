@@ -169,4 +169,22 @@ export abstract class BasePage {
     await locator.screenshot({ path: savePath });
     Logger.success(`Screenshot of element "${elementName}" saved successfully.`);
   }
+
+  /**
+   * Select an option from a dropdown selector by its label or value.
+   * @param selector Locator, or string selector
+   * @param optionValue Value or label to select
+   * @param elementName Readable element name for logging
+   */
+  async selectDropdownOption(
+    selector: string | any,
+    optionValue: string,
+    elementName: string
+  ): Promise<void> {
+    Logger.info(`Selecting option "${optionValue}" from dropdown: "${elementName}"`);
+    const locator = typeof selector === 'string' ? this.page.locator(selector) : selector;
+    await locator.waitFor({ state: 'visible' });
+    await locator.selectOption(optionValue);
+    Logger.success(`Option "${optionValue}" successfully selected from "${elementName}".`);
+  }
 }
