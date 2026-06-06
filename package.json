@@ -10,7 +10,8 @@
     "test:debug": "npx playwright test --debug",
     "test:ui-mode": "npx playwright test --ui",
     "test:report": "npx playwright show-report",
-    "lint": "npx tsc --noEmit"
+    "lint": "npx tsc --noEmit",
+    "daily-commit": "node scripts/daily-commit.js"
   },
   "keywords": [
     "playwright",
